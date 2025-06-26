@@ -1,0 +1,117 @@
+name: CI/CD with Semantic Release and GKE
+
+on:
+  push:
+    branches:
+      - "master"
+      - "dev"
+      - "feature/**"
+  pull_request:
+    branches:
+      - "dev"
+      - "master"
+
+# env:
+#   IMAGE_NAME: hello-flask-app
+#   PROJECT_ID: your-gcp-project
+#   REGION: your-region
+#   REPO_NAME: your-artifact-registry-repo us-central1-docker.pkg.dev/resonant-kayak-321707/hello-flask
+
+env:
+  IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REGION: ${{ secrets.GCP_REGION }}
+  REPO_NAME: ${{ secrets.DOCKER_REPO_NAME }}
+
+jobs:
+  # ---------- CI ----------
+  ci:
+    name: Test & Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest bandit
+
+      - name: Run tests
+        run: pytest test_app.py
+
+      - name: Run security scan
+        run: bandit -r .
+
+  # ---------- Semantic Release & Docker Build ----------
+  release-and-build:
+    name: Semantic Release & Docker Build
+    runs-on: ubuntu-latest
+    needs: ci
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install semantic-release
+        run: npm install -g semantic-release @semantic-release/git @semantic-release/github
+
+      - name: Run semantic-release and get version
+        id: set-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          VERSION=$(semantic-release --dry-run | grep -oP 'The next release version is \K([0-9]+\.[0-9]+\.[0-9]+([-a-z0-9.]*)?)')
+          echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:$RELEASE_VERSION"
+          docker build -t $IMAGE .
+          docker push $IMAGE
+          echo "IMAGE_URI=$IMAGE" >> $GITHUB_ENV
+
+  # ---------- Deploy to GKE (only on dev or master) ----------
+#   deploy:
+#     name: Deploy to GKE
+#     runs-on: ubuntu-latest
+#     needs: release-and-build
+#     if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Authenticate with Google Cloud
+#         uses: google-github-actions/auth@v2
+#         with:
+#           credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+#       - name: Get GKE Credentials
+#         uses: google-github-actions/get-gke-credentials@v2
+#         with:
+#           cluster_name: your-gke-cluster
+#           location: ${{ env.REGION }}
+#           project_id: ${{ env.PROJECT_ID }}
+
+#       - name: Deploy to Kubernetes
+#         run: |
+#           NAMESPACE="${{ github.ref == 'refs/heads/master' && 'production' || 'dev' }}"
+#           kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply -f -
+#           envsubst < k8s/deployment.yaml | kubectl apply -n $NAMESPACE -f -
