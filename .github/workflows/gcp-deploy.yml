@@ -68,7 +68,7 @@ jobs:
       - name: Run semantic-release and get version
         id: set-release
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           VERSION=$(semantic-release --dry-run | grep -oP 'The next release version is \K([0-9]+\.[0-9]+\.[0-9]+([-a-z0-9.]*)?)')
           echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
