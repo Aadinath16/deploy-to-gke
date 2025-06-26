@@ -6,4 +6,4 @@ def hello():
     return "Hello from Flask-1 on GKE!"
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8080)  # nosec B104
