@@ -70,8 +70,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          VERSION=$(npx semantic-release | tee semantic.log | grep -oP 'Published release \K([0-9]+\.[0-9]+\.[0-9]+([-a-z0-9.]*)?)')
+          npx semantic-release
+          VERSION=$(cat VERSION)
+          echo "Resolved version: $VERSION"
           echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+        # run: |
+        #   # VERSION=$(semantic-release --dry-run | grep -oP 'The next release version is \K([0-9]+\.[0-9]+\.[0-9]+([-a-z0-9.]*)?)')
+        #   # echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2

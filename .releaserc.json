@@ -10,10 +10,13 @@
       "prerelease": "alpha"
     }
   ],
-  "plugins": [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/github"
-  ],
-  "tagFormat": "${version}"
-}
+    "npmPublish": false,
+    "plugins": [
+      [
+        "@semantic-release/exec",
+        {
+          "successCmd": "echo v${nextRelease.version} > VERSION"
+        }
+      ]
+    ]
+  }
