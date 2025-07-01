@@ -91,22 +91,24 @@ jobs:
       #   #   # VERSION=$(semantic-release --dry-run | grep -oP 'The next release version is \K([0-9]+\.[0-9]+\.[0-9]+([-a-z0-9.]*)?)')
       #   #   # echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Authenticate with Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+      # - name: Authenticate with Google Cloud
+      #   uses: google-github-actions/auth@v2
+      #   with:
+      #     credentials_json: '${{ secrets.GCP_SA_KEY }}'
 
-      - name: Configure Docker
-        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+      # - name: Configure Docker
+      #   run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
       - name: Build and Push Docker Image
         run: |
           RELEASE_TAG=$(git describe --tags --abbrev=0)
           echo "RELEASE_TAG: ${RELEASE_TAG}"
           IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
-          docker build -t $IMAGE .
-          docker push $IMAGE
-          echo "IMAGE_URI=$IMAGE" >> $GITHUB_ENV
+          echo ${IMAGE}
+
+        # docker build -t $IMAGE .
+        # docker push $IMAGE
+        # echo "IMAGE_URI=$IMAGE" >> $GITHUB_ENV
 
   # ---------- Deploy to GKE (only on dev or master) ----------
 #   deploy:
