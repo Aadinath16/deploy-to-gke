@@ -62,22 +62,31 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install semantic-release
-        run: npm install -g semantic-release @semantic-release/git @semantic-release/github
-
-      - name: Run semantic-release and get version
-        id: set-release
+      - name: Run semantic release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
         run: npx semantic-release
-        # run: |
-        #   npx semantic-release
-        #   VERSION=$(cat VERSION)
-        #   echo "Resolved version: $VERSION"
-        #   echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
-        # run: |
-        #   # VERSION=$(semantic-release --dry-run | grep -oP 'The next release version is \K([0-9]+\.[0-9]+\.[0-9]+([-a-z0-9.]*)?)')
-        #   # echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Debug Git Tags
+        run: |
+          echo "Showing all tags:"
+          git tag
+          echo "Showing latest tag:"
+          git describe --tags --abbrev=0 || echo "No tags found"
+
+      # - name: Run semantic-release and get version
+      #   id: set-release
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      #   run: npx semantic-release
+      #   # run: |
+      #   #   npx semantic-release
+      #   #   VERSION=$(cat VERSION)
+      #   #   echo "Resolved version: $VERSION"
+      #   #   echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
+      #   # run: |
+      #   #   # VERSION=$(semantic-release --dry-run | grep -oP 'The next release version is \K([0-9]+\.[0-9]+\.[0-9]+([-a-z0-9.]*)?)')
+      #   #   # echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
@@ -89,7 +98,9 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:$RELEASE_VERSION"
+          RELEASE_TAG=$(git describe --tags --abbrev=0)
+          echo "RELEASE_TAG: ${RELEASE_TAG}"
+          IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
           docker build -t $IMAGE .
           docker push $IMAGE
           echo "IMAGE_URI=$IMAGE" >> $GITHUB_ENV
