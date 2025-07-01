@@ -70,6 +70,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: npx semantic-release
 
+        
       - name: Debug Git Tags
         run: |
           echo "Showing all tags:"
