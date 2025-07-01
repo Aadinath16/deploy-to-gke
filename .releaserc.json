@@ -10,17 +10,42 @@
       "prerelease": "alpha"
     }
   ],
+  "repositoryUrl": "https://github.com/Aadinath16/deploy-to-gke",
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
-    [
-      "@semantic-release/git",
-      {
-        "assets": ["CHANGELOG.md", "package.json"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }
-    ],
+    "@semantic-release/npm",
     "@semantic-release/github"
-  ]
+  ],
+  "tagFormat": "v${version}"
 }
+
+
+
+// {
+//   "branches": [
+//     "main",
+//     {
+//       "name": "dev",
+//       "prerelease": "rc"
+//     },
+//     {
+//       "name": "feature",
+//       "prerelease": "alpha"
+//     }
+//   ],
+//   "plugins": [
+//     "@semantic-release/commit-analyzer",
+//     "@semantic-release/release-notes-generator",
+//     "@semantic-release/changelog",
+//     [
+//       "@semantic-release/git",
+//       {
+//         "assets": ["CHANGELOG.md", "package.json"],
+//         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+//       }
+//     ],
+//     "@semantic-release/github"
+//   ]
+// }
