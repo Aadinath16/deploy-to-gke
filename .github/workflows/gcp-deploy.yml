@@ -67,7 +67,7 @@ jobs:
 
       - name: Run semantic release
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: npx semantic-release
 
       - name: Debug Git Tags
