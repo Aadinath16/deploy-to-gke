@@ -1,3 +1,10 @@
+# [1.0.0-beta.3](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2025-07-05)
+
+
+### Features
+
+* added file ([f4bb4dd](https://github.com/Aadinath16/deploy-to-gke/commit/f4bb4dd10097f6846350c7bb0a0df6137039c1bb))
+
 # [1.0.0-beta.2](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2025-07-05)
 
 
