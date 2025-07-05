@@ -67,7 +67,7 @@ jobs:
 
       - name: Run semantic release
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GH_TOKEN: ${{ secrets.ACTION }}
         run: npx semantic-release
 
         
@@ -81,7 +81,7 @@ jobs:
       # - name: Run semantic-release and get version
       #   id: set-release
       #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      #     GITHUB_TOKEN: ${{ secrets.ACTION }}
       #   run: npx semantic-release
       #   # run: |
       #   #   npx semantic-release
