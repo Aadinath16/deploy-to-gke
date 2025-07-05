@@ -1,63 +1,63 @@
-name: Release Workflow
+# name: Release Workflow
 
-on:
-  push:
-    branches:
-      - main
-      - dev
-      - branch-1
+# on:
+#   push:
+#     branches:
+#       - main
+#       - dev
+#       # - branch-1
 
-jobs:
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for npm provenance
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+# jobs:
+#   release:
+#     name: Release
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: write # to be able to publish a GitHub release
+#       issues: write # to be able to comment on released issues
+#       pull-requests: write # to be able to comment on released pull requests
+#       id-token: write # to enable use of OIDC for npm provenance
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '20'
 
-      - name: Install dependencies
-        run: npm install
+#       - name: Install dependencies
+#         run: npm install
 
-      - name: Run semantic release
-        env:
-          GH_TOKEN: ${{ secrets.ACTION }}
-        run: npx semantic-release
+#       - name: Run semantic release
+#         env:
+#           GH_TOKEN: ${{ secrets.ACTION }}
+#         run: npx semantic-release
 
-      - name: Debug Git Tags
-        run: |
-          echo "Showing all tags:"
-          git tag
-          echo "Showing latest tag:"
-          git describe --tags --abbrev=0 || echo "No tags found"
+#       - name: Debug Git Tags
+#         run: |
+#           echo "Showing all tags:"
+#           git tag
+#           echo "Showing latest tag:"
+#           git describe --tags --abbrev=0 || echo "No tags found"
 
-      - name: Build and Push Docker Image
-        run: |
-          RELEASE_TAG=$(git describe --tags --abbrev=0)
-          echo "RELEASE_TAG: ${RELEASE_TAG}"
-          IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
-          echo ${IMAGE}
+#       - name: Build and Push Docker Image
+#         run: |
+#           RELEASE_TAG=$(git describe --tags --abbrev=0)
+#           echo "RELEASE_TAG: ${RELEASE_TAG}"
+#           IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
+#           echo ${IMAGE}
 
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v2
+#       # - name: Set up Docker Buildx
+#       #   uses: docker/setup-buildx-action@v2
 
-      # - name: Log in to Docker Hub
-      #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+#       # - name: Log in to Docker Hub
+#       #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # - name: Build and Tag Docker Image
-      #   run: |
-      #     RELEASE_TAG=$(git describe --tags --abbrev=0)
-      #     echo "RELEASE_TAG: ${RELEASE_TAG}"
-      #     docker buildx build --push -f src/dockerfile --tag adinath16/hello:${RELEASE_TAG} .
+#       # - name: Build and Tag Docker Image
+#       #   run: |
+#       #     RELEASE_TAG=$(git describe --tags --abbrev=0)
+#       #     echo "RELEASE_TAG: ${RELEASE_TAG}"
+#       #     docker buildx build --push -f src/dockerfile --tag adinath16/hello:${RELEASE_TAG} .
 
-      - name: Clean up Docker Buildx
-        run: docker buildx prune -f
+#       - name: Clean up Docker Buildx
+#         run: docker buildx prune -f

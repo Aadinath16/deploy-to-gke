@@ -1,0 +1,4 @@
+flask==2.3.2
+werkzeug<3.0
+pytest==8.2.1
+bandit==1.7.7
