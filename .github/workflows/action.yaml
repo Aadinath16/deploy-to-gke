@@ -106,5 +106,11 @@ jobs:
             workload_identity_provider: 'projects/542589123049/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
             service_account: 'github-ci@resonant-kayak-321707.iam.gserviceaccount.com'
 
-        - name: Clean up Docker Buildx
-          run: docker buildx prune -f
+        - name: Build and Push Docker Image
+          run: |
+                docker build -t $IMAGE .
+                docker push $IMAGE
+                echo "IMAGE_URI=$IMAGE" >> $GITHUB_ENV
+
+        # - name: Clean up Docker Buildx
+        #   run: docker buildx prune -f
