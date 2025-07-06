@@ -75,11 +75,11 @@ jobs:
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
 
-    # env:
-    #   IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
-    #   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-    #   REGION: ${{ vars.GCP_REGION }}
-    #   REPO_NAME: ${{ vars.DOCKER_REPO_NAME }}
+    env:
+      IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+      PROJECT_ID: ${{ vars.PROJECT_ID }}
+      REGION: ${{ vars.REGION }}
+      REPO_NAME: ${{ vars.REPO_NAME }}
       
     steps:
         - name: Checkout code
@@ -100,12 +100,13 @@ jobs:
         #         IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
         #         echo "IMAGE_TAG: ${IMAGE}"
 
-        - name: Debug repository variables
+        - name: Debug all
           run: |
-            echo "DOCKER_IMAGE_NAME: ${{ vars.IMAGE_NAME }}"
-            echo "GCP_PROJECT_ID: ${{ vars.GCP_PROJ }}"
-            echo "GCP_REGION: ${{ vars.GCP_REGION }}"
-            echo "DOCKER_REPO_NAME: ${{ vars.REPO_NM }}"
+                echo "RELEASE_TAG: ${RELEASE_TAG}"
+                echo "REGION: ${{ env.REGION }}"
+                echo "PROJECT_ID: ${{ env.PROJECT_ID }}"
+                echo "REPO_NAME: ${{ env.REPO_NAME }}"
+                echo "IMAGE_NAME: ${{ env.IMAGE_NAME }}"
 
         # - name: Authenticate to GCP
         #   uses: google-github-actions/auth@v1
