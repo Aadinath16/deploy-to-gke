@@ -1,3 +1,10 @@
+# [1.0.0-beta.16](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.15...v1.0.0-beta.16) (2025-07-06)
+
+
+### Features
+
+* add new feature for testing pre-release beta ([9fb6905](https://github.com/Aadinath16/deploy-to-gke/commit/9fb690585065a0a869d5bc02969c2c88612f0366))
+
 # [1.0.0-beta.15](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.14...v1.0.0-beta.15) (2025-07-06)
 
 
