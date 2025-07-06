@@ -130,3 +130,5 @@ jobs:
             tags: ${{env.IMAGE_TAG}}
             file: src/dockerfile
             # tags: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
+        - name: Clean up Docker Buildx
+          run: docker buildx prune -f
