@@ -30,6 +30,23 @@ jobs:
         with:
             fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          cd src/
+          pip install -r requirements.txt
+          pip install pytest bandit
+
+      - name: Run tests
+        run: pytest src/test_app.py
+
+      - name: Run security scan
+        run: bandit -r .
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -52,12 +69,6 @@ jobs:
           TAG=$(git describe --tags --abbrev=0)
           echo "release_tag=$TAG"
           echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
-
-      # - name: Extract created tag
-      #   id: get_tag
-      #   run: |
-      #     TAG=$(git describe --tags --abbrev=0)
-      #     echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
 
   release-and-build:
     name: Semantic Release & Docker Build
@@ -82,6 +93,13 @@ jobs:
                 echo "RELEASE_TAG: ${RELEASE_TAG}"
                 IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
                 echo ${IMAGE}
+
+        - name: Authenticate to GCP
+          uses: google-github-actions/auth@v1
+          with:
+            token_format: 'access_token'
+            workload_identity_provider: 'projects/542589123049/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+            service_account: 'github-ci@resonant-kayak-321707.iam.gserviceaccount.com'
 
         - name: Clean up Docker Buildx
           run: docker buildx prune -f
