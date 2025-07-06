@@ -1,3 +1,10 @@
+# [1.0.0-beta.12](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.11...v1.0.0-beta.12) (2025-07-06)
+
+
+### Bug Fixes
+
+* pipeline created ([c66b892](https://github.com/Aadinath16/deploy-to-gke/commit/c66b8927f013ff02f6d49031b35a2c5245504f32))
+
 # [1.0.0-beta.11](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.10...v1.0.0-beta.11) (2025-07-06)
 
 
