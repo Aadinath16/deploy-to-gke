@@ -98,7 +98,7 @@ jobs:
           run: |
                 echo "RELEASE_TAG: ${RELEASE_TAG}"
                 IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
-                echo "IMAGE_TAG: ${IMAGE}"
+                echo "IMAGE_TAG: ${IMAGE}" >> $GITHUB_ENV
 
         - name: Debug all
           run: |
@@ -122,4 +122,5 @@ jobs:
           uses: docker/build-push-action@v6
           with:
             push: true
-            tags: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}
+            tags: ${{env.IMAGE_TAG}}
+            # tags: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
