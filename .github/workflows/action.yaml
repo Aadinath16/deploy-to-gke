@@ -105,18 +105,26 @@ jobs:
                 IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
                 echo "IMAGE_TAG: ${IMAGE}"
 
-        - name: Authenticate to GCP
-          uses: google-github-actions/auth@v1
-          with:
-            token_format: 'access_token'
-            workload_identity_provider: 'projects/542589123049/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
-            service_account: 'github-ci@resonant-kayak-321707.iam.gserviceaccount.com'
+        - name: Debug all
+          run: |
+            echo "RELEASE_TAG: ${RELEASE_TAG}"
+            echo "REGION: ${REGION}"
+            echo "PROJECT_ID: ${PROJECT_ID}"
+            echo "REPO_NAME: ${REPO_NAME}"
+            echo "IMAGE_NAME: ${IMAGE_NAME}"
 
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v3
+        # - name: Authenticate to GCP
+        #   uses: google-github-actions/auth@v1
+        #   with:
+        #     token_format: 'access_token'
+        #     workload_identity_provider: 'projects/542589123049/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+        #     service_account: 'github-ci@resonant-kayak-321707.iam.gserviceaccount.com'
+
+        # - name: Set up Docker Buildx
+        #   uses: docker/setup-buildx-action@v3
       
-        - name: Build and push
-          uses: docker/build-push-action@v6
-          with:
-            push: true
-            tags: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
+        # - name: Build and push
+        #   uses: docker/build-push-action@v6
+        #   with:
+        #     push: true
+        #     tags: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
