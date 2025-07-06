@@ -93,7 +93,7 @@ jobs:
             echo "RELEASE_TAG: ${RELEASE_TAG}"
 
 
-        - name: Build and Push Docker Image
+        - name: Docker Image tag
           run: |
                 echo "RELEASE_TAG: ${RELEASE_TAG}"
                 IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
