@@ -1,3 +1,10 @@
+# [1.0.0-beta.8](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.7...v1.0.0-beta.8) (2025-07-06)
+
+
+### Features
+
+* added docker build code ([a5dfdbf](https://github.com/Aadinath16/deploy-to-gke/commit/a5dfdbfc46912a22167e41d8a7728c55378850fb))
+
 # [1.0.0-beta.7](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2025-07-06)
 
 
