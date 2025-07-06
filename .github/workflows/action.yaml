@@ -7,11 +7,6 @@ on:
       - dev
       - branch-1
 
-# env:
-#   IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
-#   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-#   REGION: ${{ vars.GCP_REGION }}
-#   REPO_NAME: ${{ vars.DOCKER_REPO_NAME }}
 
 jobs:
   release:
@@ -80,11 +75,11 @@ jobs:
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
 
-    env:
-      IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
-      PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-      REGION: ${{ vars.GCP_REGION }}
-      REPO_NAME: ${{ vars.DOCKER_REPO_NAME }}
+    # env:
+    #   IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
+    #   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+    #   REGION: ${{ vars.GCP_REGION }}
+    #   REPO_NAME: ${{ vars.DOCKER_REPO_NAME }}
       
     steps:
         - name: Checkout code
@@ -99,19 +94,19 @@ jobs:
           run: |
             echo "RELEASE_TAG: ${RELEASE_TAG}"
 
-        - name: Docker Image tag
-          run: |
-                echo "RELEASE_TAG: ${RELEASE_TAG}"
-                IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
-                echo "IMAGE_TAG: ${IMAGE}"
+        # - name: Docker Image tag
+        #   run: |
+        #         echo "RELEASE_TAG: ${RELEASE_TAG}"
+        #         IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
+        #         echo "IMAGE_TAG: ${IMAGE}"
 
         - name: Debug all
           run: |
-            echo "RELEASE_TAG: ${RELEASE_TAG}"
-            echo "REGION: ${REGION}"
-            echo "PROJECT_ID: ${PROJECT_ID}"
-            echo "REPO_NAME: ${REPO_NAME}"
-            echo "IMAGE_NAME: ${IMAGE_NAME}"
+                echo "RELEASE_TAG: ${RELEASE_TAG}"
+                echo "REGION: ${{ vars.GCP_REGION }}"
+                echo "PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}"
+                echo "REPO_NAME: ${{ vars.DOCKER_REPO_NAME }}"
+                echo "IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}"
 
         # - name: Authenticate to GCP
         #   uses: google-github-actions/auth@v1
