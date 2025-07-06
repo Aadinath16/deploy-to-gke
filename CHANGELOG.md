@@ -1,3 +1,10 @@
+# [1.0.0-beta.7](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.6...v1.0.0-beta.7) (2025-07-06)
+
+
+### Features
+
+* resolve error ([511e32d](https://github.com/Aadinath16/deploy-to-gke/commit/511e32d84f2865220261335507e809414aa8501f))
+
 # [1.0.0-beta.6](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2025-07-06)
 
 
