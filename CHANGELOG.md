@@ -1,3 +1,10 @@
+# [1.0.0-beta.10](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.9...v1.0.0-beta.10) (2025-07-06)
+
+
+### Features
+
+* added code ([3b9cbe2](https://github.com/Aadinath16/deploy-to-gke/commit/3b9cbe23e81e7a7a545cf6fff55890e9caa8fdc7))
+
 # [1.0.0-beta.9](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.8...v1.0.0-beta.9) (2025-07-06)
 
 
