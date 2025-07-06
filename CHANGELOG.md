@@ -1,3 +1,10 @@
+# [1.0.0-beta.4](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2025-07-06)
+
+
+### Features
+
+* added new feat ([63256f4](https://github.com/Aadinath16/deploy-to-gke/commit/63256f4f938a95ca5349099d8a247b2868708445))
+
 # [1.0.0-beta.3](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2025-07-05)
 
 
