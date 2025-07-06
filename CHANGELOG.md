@@ -1,3 +1,13 @@
+# [1.0.0-beta.18](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.17...v1.0.0-beta.18) (2025-07-06)
+
+
+* feat!: test2 ([b0f2ce7](https://github.com/Aadinath16/deploy-to-gke/commit/b0f2ce7848cc4e203290435fe483d47314aed8f2))
+
+
+### BREAKING CHANGES
+
+* test2
+
 # [1.0.0-beta.17](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.16...v1.0.0-beta.17) (2025-07-06)
 
 
