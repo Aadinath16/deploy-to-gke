@@ -112,6 +112,7 @@ jobs:
                 echo "IMAGE_NAME: ${{ env.IMAGE_NAME }}"
                 ls -la
 
+                
         - name: Authenticate to GCP
           uses: google-github-actions/auth@v1
           with:
