@@ -7,11 +7,11 @@ on:
       - dev
       - branch-1
 
-env:
-  IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
-  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-  REGION: ${{ vars.GCP_REGION }}
-  REPO_NAME: ${{ vars.DOCKER_REPO_NAME }}
+# env:
+#   IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
+#   PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+#   REGION: ${{ vars.GCP_REGION }}
+#   REPO_NAME: ${{ vars.DOCKER_REPO_NAME }}
 
 jobs:
   release:
@@ -69,7 +69,6 @@ jobs:
           TAG=$(git describe --tags --abbrev=0)
           echo "release_tag=$TAG"
           echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "REGION : ${{ env.REGION }}"
 
   release-and-build:
     name: Semantic Release & Docker Build
@@ -80,6 +79,13 @@ jobs:
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
+
+    env:
+      IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
+      PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      REGION: ${{ vars.GCP_REGION }}
+      REPO_NAME: ${{ vars.DOCKER_REPO_NAME }}
+      
     steps:
         - name: Checkout code
           uses: actions/checkout@v3
@@ -114,12 +120,3 @@ jobs:
           with:
             push: true
             tags: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${{ env.RELEASE_TAG }}
-
-        # - name: Build and Push Docker Image
-        #   run: |
-        #         docker build -t $IMAGE .
-        #         docker push $IMAGE
-        #         echo "IMAGE_URI=$IMAGE" >> $GITHUB_ENV
-
-        # - name: Clean up Docker Buildx
-        #   run: docker buildx prune -f
