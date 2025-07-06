@@ -1,3 +1,10 @@
+# [1.0.0-beta.15](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.14...v1.0.0-beta.15) (2025-07-06)
+
+
+### Features
+
+* added PR config ([eec5fce](https://github.com/Aadinath16/deploy-to-gke/commit/eec5fce5b0eab270125245fbcec916153afe8d3a))
+
 # [1.0.0-beta.14](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.13...v1.0.0-beta.14) (2025-07-06)
 
 
