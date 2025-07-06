@@ -1,3 +1,10 @@
+# [1.0.0-beta.6](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2025-07-06)
+
+
+### Features
+
+* added auth to gcp code ([c306ec5](https://github.com/Aadinath16/deploy-to-gke/commit/c306ec59adf98f3a34b3fe2a930df970f71e9c40))
+
 # [1.0.0-beta.5](https://github.com/Aadinath16/deploy-to-gke/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2025-07-06)
 
 
