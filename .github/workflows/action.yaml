@@ -22,26 +22,13 @@ jobs:
       issues: write # to be able to comment on released issues
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
+    outputs:
+      release_tag: ${{ steps.get_tag.outputs.release_tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-    #   - name: Set up Python
-    #     uses: actions/setup-python@v4
-    #     with:
-    #       python-version: '3.10'
-
-    #   - name: Install dependencies
-    #     run: |
-    #       cd src/
-    #       pip install -r requirements.txt
-    #       pip install pytest bandit
-
-    #   - name: Run tests
-    #     run: pytest src/test_app.py
-
-    #   - name: Run security scan
-    #     run: bandit -r .
+        with:
+            fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -56,11 +43,21 @@ jobs:
           GH_TOKEN: ${{ secrets.ACTION }}
         run: npx semantic-release
 
+      - name: Fetch tags created via API
+        run: git fetch --tags  # <--- This is critical
+
       - name: Extract created tag
         id: get_tag
         run: |
           TAG=$(git describe --tags --abbrev=0)
+          echo "release_tag=$TAG"
           echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      # - name: Extract created tag
+      #   id: get_tag
+      #   run: |
+      #     TAG=$(git describe --tags --abbrev=0)
+      #     echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
 
   release-and-build:
     name: Semantic Release & Docker Build
@@ -69,6 +66,8 @@ jobs:
     steps:
         - name: Checkout code
           uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
 
         - name: Set release tag
           run: echo "RELEASE_TAG=${{ needs.release.outputs.release_tag }}" >> $GITHUB_ENV
@@ -77,30 +76,12 @@ jobs:
           run: |
             echo "RELEASE_TAG: ${RELEASE_TAG}"
 
-        # - name: Debug Git Tags
-        #   run: |
-        #         echo "Showing all tags:"
-        #         git tag
-        #         echo "Showing latest tag:"
-        #         git describe --tags --abbrev=0 || echo "No tags found"
 
         - name: Build and Push Docker Image
           run: |
                 echo "RELEASE_TAG: ${RELEASE_TAG}"
                 IMAGE="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:${RELEASE_TAG}"
                 echo ${IMAGE}
-
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v2
-
-      # - name: Log in to Docker Hub
-      #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      # - name: Build and Tag Docker Image
-      #   run: |
-      #     RELEASE_TAG=$(git describe --tags --abbrev=0)
-      #     echo "RELEASE_TAG: ${RELEASE_TAG}"
-      #     docker buildx build --push -f src/dockerfile --tag adinath16/hello:${RELEASE_TAG} .
 
         - name: Clean up Docker Buildx
           run: docker buildx prune -f
